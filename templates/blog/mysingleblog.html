@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load extras %}
+
+{% block title %}
+    CodeNista Blog Post
+{% endblock title %}
+
+{% block js %}
+  <script>
+    let previews = document.getElementByClassName("preview")
+    Arrays.from(previews).forEach(()=>{
+      element.innerHTML = element.innerText
+    })
+  </script>
+
+{% endblock js %}
+
+{% block body %}
+
+    {% comment %} POST DISPLAY {% endcomment %}
+    <div class="container">
+        <div class="col-sm mt-5 blog-main">
+            <h3 class="pb-3 mb-4 font-italic text-brown border-bottom">
+                From the CodeNista
+            </h3>
+
+            <div class="blog-post">
+                <h2 class="blog-post-title" style="color:#5c6acb">{{title}}</h2>
+                <p class="blog-post-meta"><b>({{views}} views)</b><br> ({{post.timestamp}}) <b>by</b> <a href="/about">{{post.author}}</a></p>
+
+                <p class="font-italic">About: {{post.summary}}</p>
+                <hr>
+                <div class="preview">
+                  <p class="align-middle" style="text-align:justify">{{post.content|safe}}</p>
+                </div>
+            </div>
+            <hr>
+        </div>
+        
+
+        {% comment %} update post {% endcomment %}
+        <div class=" row col-sm">
+            <div class='col-sm-1'>
+              <form method='post' action="/blog/updateaction" class='inline'>
+              {% csrf_token %}
+                  <input type="hidden" value="{{post.sno}}" name="psno" id="psno">
+                  <button class="btn btn-info mt-3"> UPDATE </button>
+              </form>
+            </div>
+            
+            <div class="col-sm-1 mt-3 ">
+              <form method='post' action="/blog/deleteaction" class='inline'>
+              {% csrf_token %}
+                  <input type="hidden" value="{{post.sno}}" name="psno" id="psno">
+                  <button class="btn btn-danger"> DELETE </button>
+              </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-5">
+    <hr style="border:2px solid #073839">
+    </div>
+
+    {% comment %} COMMENT SECTION {% endcomment %}
+
+    <div class="container mt-5">
+        <h5 class="pb-3 mb-4 font-italic border-bottom">
+            Comments Section
+        </h5>
+    </div>  
+
+     {% comment %} Authentication Check for Posting Comments  {% endcomment %}
+    {% if user.is_authenticated %}
+    <div class="container">
+        <form class="form-group mt-4" action="postcomment" method="POST">
+        {% csrf_token %}
+            <div class="form-group col-sm mb-2">
+              <label for="comment" >Post Your Comment Here</label>
+              <input type="text" class="form-control" id="comment" name="comment" aria-describedby="comment" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <input type="hidden" class="form-control" id="sno" name="sno" value="{{post.sno}}" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+                <input type="hidden" class="form-control" id="csno" name="csno" value="" >
+            </div>
+            <div class="form-group col-sm mb-2">
+              <button type="submit" class="btn btn-dark mb-4">Comment</button>
+            </div>       
+        </form>
+    </div>
+
+    {% else %}
+    <div class="container">
+        <form class="form-group mt-4" action="postcommentNotuser" method="POST">
+        {% csrf_token %}
+            <div class="form-group col-sm mb-2">
+              <label for="comment" >Post Your Comment Here</label>
+              <input type="text" class="form-control" id="comment" name="comment" aria-describedby="comment" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <input type="hidden" class="form-control" id="sno" name="sno" value="{{post.sno}}" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <button type="submit" class="btn btn-dark mb-4">Comment</button>
+            </div>       
+        </form>
+    </div>
+
+    {% endif %}
+
+  {% comment %} COMMENTS DISPLAY WITH REPLIES {% endcomment %}
+  <div class="container">
+    <div class="row col-sm ml-1">
+        {% if pcomments.count < 2 %}
+            <h5>{{pcomments.count}} Comment</h5>
+        {% else %}
+            <h5>{{pcomments.count}} Comments</h5>
+        {% endif %}
+    
+    </div>
+
+    <div class="container col-xs-12 col-sm-12">
+    {% for comment in pcomments  %}
+
+        <div class="row mt-4">
+            <div class="col-sm-3">
+                <em>User <strong>{{comment.user.username}} </strong> <br> <span class="badge badge-secondary" style="font-size:15px">{{comment.timestamp|naturaltime}}</span> </em>
+            </div>
+            
+            {% comment %} display commment and reply functionality {% endcomment %}
+            <div class="col-sm-8">
+                <div class="row col-sm col-xs ">{{comment.comment}} </div>
+                {% if user.is_authenticated %}
+                <div class='reply mt-1'>  
+                    <button class="btn btn-sm btn-secondary" type="button" data-toggle="collapse" data-target="#reply{{comment.sno}}" aria-expanded="false" aria-controls="reply{{comment.sno}}">
+                      Reply
+                    </button>
+
+                    <div class="collapse mt-1" id="reply{{comment.sno}}">
+                      <div class="card card-body">
+                            <form method="post" action="postcomment">
+                            {% csrf_token %}
+                                <div class="form-group">
+                                  <label for="comment">Post Your Reply Here</label>
+                                  <input type="text" class="form-control" id="comment" name="comment" aria-describedby="emailHelp" placeholder="Enter Reply">
+                                </div>
+                                <div class="form-group">
+                                  <input type="hidden" class="form-control" name="sno" value="{{post.sno}}" id="sno" aria-describedby="sno">
+                                </div>
+                                <div class="form-group">
+                                  <input type="hidden" class="form-control" name="csno" value="{{comment.sno}}" id="csno" aria-describedby="csno">
+                                </div>
+                                <button type="submit" class="btn btn-dark">Submit</button>
+                            </form>
+                      </div>
+                    </div>
+
+                </div>
+                {% else %}
+                <div class='reply mt-1'>  
+                    <button class="btn btn-sm btn-secondary" type="button" disabled>
+                      Login To Reply
+                    </button>
+                </div>
+                {% endif %}
+                
+                
+                {% comment %} DISPLAY REPLIES {% endcomment %}
+                <div class="displayreplies mt-2">
+
+                {% for reply in dReply|get_reply:comment.sno  %}
+
+
+                    <a class="nav-link active"  data-toggle="collapse" href="#{{reply.sno}}" aria-expanded="false" aria-controls="{{reply.sno}}" style="color:black">
+                    | Replies!
+                    </a>
+                    
+                    <div class="collapse" id="{{reply.sno}}">
+                      <div class="card card-body">
+                            <em><b>Replies:</b></em>
+                            <hr class="mt-1">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                   <em>User <strong>{{reply.user.username}} </strong> <br> <span style="font-size:15px">({{reply.timestamp|naturaltime}})</span> </em> 
+                                </div>
+    
+                                <div class="col-sm-8">
+                                {{reply.comment}}
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        
+        </div>
+
+    {% endfor %}
+   </div>
+{% endblock body %}

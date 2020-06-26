@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    CodeNista Blogs
+{% endblock title %}
+
+{% block body %}
+    
+<div class="container mt-4 mb-5">
+
+    {% if bookmarks.count > 0 %}
+
+    <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+            <h2 class="center" style="color:#5c6acb">My Bookmarks </h2>
+        </div>
+        <div class="col-sm">
+        </div>
+    </div>
+
+    {% for bookmark in bookmarks %}
+
+    <div class="row mb-2 mt-5">
+        <div class="col-sm">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-primary">By: {{bookmark.post.author}}</strong>
+              <h3 class="mb-0">
+                <a class="text-dark text-uppercase" href="/blog/{{bookmark.post.slug}}">{{bookmark.post.title}}</a>
+              </h3>
+              <div class="mb-1 text-muted">
+                {{bookmark.post.timestamp}} 
+                ({{bookmark.post.views}} views)   &nbsp
+              </div>
+              <p class="card-text mb-auto">{{bookmark.post.content|safe|truncatechars:200}}</p>
+               
+              <form class="form-group" action="/blog/deletebookmark" method="POST">
+                {% csrf_token %}
+                    <input type="hidden" class="form-control" id="booksno" name="booksno" value="{{bookmark.booksno}}" >
+                    <button class="btn btn-secondary btn-sm" type="submit"> RemoveBookmark</button>
+              </form>              
+              <a href="/blog/singlebookmark" class="mt-1">Continue Reading</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+
+    <div class="container col-sm" style="margin-top:120px">
+        <div class="jumbotron">
+            <h1 class="display-5">Hey! You Have'nt Bookmarked Any Blog Yet</h1>
+            <p class="lead"> If You Are Not A CodeNista User Then SignUp First</p>
+            <hr class="my-4">
+            <p>To Bookmark Your Favourite Blog Posts Click Below</p>
+            <p class="lead">
+              <a class="btn btn-info btn-lg" href="/blog/" role="button">ViewPosts</a>
+            </p>
+        </div>
+    </div>
+
+
+    {% endif %}
+</div>
+
+{% endblock body %}

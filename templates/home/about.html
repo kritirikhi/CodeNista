@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    About Us 
+{% endblock title %}
+
+{% block body %}
+   
+<div class="container-fluid col-xs-12 col-sm" style="background-size: cover; height:100% width:100%; background-image:url(../static/images/about3.jpg)">  
+        
+    <div class="row">
+        <div class="col-sm-3" ></div>
+        <h1 class="text-center col-sm-6" style="color:white; margin-top:150px">About CodeNista</h1>
+        <hr style="border:2px black">
+    </div>
+
+    <div class="container mt-5 mb-5 text-dark" style="margin-top:100px">
+        <p style='text-align:justify; font-size:23px'>
+            CodeNista provides you the platform to share your coding experiences from a beginner to advance programmer. 
+            It is open for all those geeks who are waiting eagerly to speak with the coding community.
+            Those who want to share their coding tutorials with the large coding community and are not able to find a good platform then CodeNista is the right place for them. 
+            One can also share their interview experiences for the top MNCs to guide others for the same.
+            Here at CodeNista you will be getting all the coding related stuff in one go. &nbsp
+            <i><u>Enjoy Learning And Make Others Able To Learn!</u></i>
+        </p>
+    </div> 
+
+    <div style="height:30px"></div>
+</div>
+
+
+<hr class='mt-5'>
+<div class="container">
+    <h2 class="text-center" style="color:#5c6acb">Our Progress</h2>
+</div>
+<hr class='mb-5'>
+
+<div class="container-fluid mb-5 mt-5 counter-section">
+
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6acb">
+                <div style="color:#ffcc00"><i class="mt-4 fa fa-users"></i></div>
+                <p style="font-size:50px; color:white">{{users}}</p>
+                <p style="font-size:50px; color:white">Users</p>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6ad4">
+                <div style="color:#ffcc00"><i class="mt-4 fa fa-briefcase"></i></div>
+                <p style="font-size:50px; color:white">{{posts}}</p>
+                <p style="font-size:50px; color:white">Blogs</p>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6ad4">
+                <div style="color:#ffcc00"><i class="mt-4 fa fa-users"></i></div>
+                <p class="counter" style="font-size:50px; color:white">{{views}}</p>
+                <p style="font-size:50px; color:white">Viewers</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+  
+<hr class='mt-5'>
+<div class="container">
+    <h2 class="text-center" style="color:#5c6acb">Contact Us</h2>
+</div>
+<hr class='mb-5'>
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h3 class="display-5">If You Face Any Issues Click Below And Submit The Form</h3>
+    <hr>
+    <p class="lead"><a href="/contact/" role="button" class="btn btn-lg btn-info">Contact</a></p>
+  </div>
+</div>
+{% endblock body %}

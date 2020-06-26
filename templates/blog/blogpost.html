@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load extras %}
+
+{% block title %}
+    CodeNista Blog Post
+{% endblock title %}
+
+{% block js %}
+  <script>
+    let previews = document.getElementByClassName("preview")
+    Arrays.from(previews).forEach(()=>{
+      element.innerHTML = element.innerText
+    })
+
+  </script>
+
+{% endblock js %}
+
+{% block body %}
+  
+    {% comment %} POST DISPLAY {% endcomment %}
+    <div class="container  brown-text">
+        <div class="col-sm mt-5">
+            <h3 class="pb-3 mb-4 font-italic text-brown" style="color:black">
+                From the CodeNista
+            </h3>
+
+            <div class="blog-post">
+                <h2 class="blog-post-title" style="color:#5c6acb">{{post.title}}</h2>
+                <p class="blog-post-meta"> <b>({{views}} views)</b><br> ({{post.timestamp}}) <b>by</b> <a href="/blog/{{post.slug}}">{{post.author}}</a></p>
+
+                <p class="font-italic">About: {{post.summary}}</p>
+                <hr>
+                <div class="preview" style="font-size:18px">
+                  <p class="text-dark" style="text-align:justify">{{post.content|safe}}</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    {% comment %} bookmark button {% endcomment %}
+    <div class="container">
+      <form class="form-group mt-4" action="bookmark" method="POST">
+        {% csrf_token %}
+            <div class="form-group col-sm mb-2">
+                <input type="hidden" class="form-control" id="postsno" name="postsno" value="{{post.sno}}" >
+            </div>
+            <div class="form-group col-sm mb-2">
+              <button type="submit" class="btn btn-info mb-4">BookmarkPost</button>
+            </div>       
+      </form>
+    </div>
+
+
+    {% comment %} COMMENT SECTION {% endcomment %}
+
+    <div class="container mt-5">
+        <h5 class="pb-3 mb-4 font-italic border-bottom">
+            Comments Section
+        </h5>
+    </div>  
+
+     {% comment %} Authentication Check for Posting Comments  {% endcomment %}
+    {% if user.is_authenticated %}
+    <div class="container">
+        <form class="form-group mt-4" action="postcomment" method="POST">
+        {% csrf_token %}
+            <div class="form-group col-sm mb-2">
+              <label for="comment" >Post Your Comment Here</label>
+              <input type="text" class="form-control" id="comment" name="comment" aria-describedby="comment" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <input type="hidden" class="form-control" id="sno" name="sno" value="{{post.sno}}" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+                <input type="hidden" class="form-control" id="csno" name="csno" value="" >
+            </div>
+            <div class="form-group col-sm mb-2">
+              <button type="submit" class="btn btn-dark mb-4">Comment</button>
+            </div>       
+        </form>
+    </div>
+
+    {% else %}
+    <div class="container">
+        <form class="form-group mt-4" action="postcommentNotuser" method="POST">
+        {% csrf_token %}
+            <div class="form-group col-sm mb-2">
+              <label for="comment" >Post Your Comment Here</label>
+              <input type="text" class="form-control" id="comment" name="comment" aria-describedby="comment" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <input type="hidden" class="form-control" id="sno" name="sno" value="{{post.sno}}" placeholder="Your Comment">
+            </div>
+            <div class="form-group col-sm mb-2">
+              <button type="submit" class="btn btn-dark mb-4">Comment</button>
+            </div>       
+        </form>
+    </div>
+
+    {% endif %}
+
+  {% comment %} COMMENTS DISPLAY WITH REPLIES {% endcomment %}
+  <div class="container mb-5">
+    <div class="row col-sm ml-1">
+        {% if pcomments.count < 2 %}
+            <h5>{{pcomments.count}} Comment</h5>
+        {% else %}
+            <h5>{{pcomments.count}} Comments</h5>
+        {% endif %}
+    
+    </div>
+
+    <div class="container col-xs-12 col-sm-12">
+    {% for comment in pcomments  %}
+
+        <div class="row mt-4">
+            <div class="col-sm-3">
+                <em>User <strong>{{comment.user.username}} </strong> <br> <span class="badge badge-secondary" style="font-size:15px">{{comment.timestamp|naturaltime}}</span> </em>
+            </div>
+            
+            {% comment %} display commment and reply functionality {% endcomment %}
+            <div class="col-sm-8">
+                <div class="row col-sm col-xs ">{{comment.comment}} </div>
+                {% if user.is_authenticated %}
+                <div class='reply mt-1'>  
+                    <button class="btn btn-sm btn-secondary" type="button" data-toggle="collapse" data-target="#reply{{comment.sno}}" aria-expanded="false" aria-controls="reply{{comment.sno}}">
+                      Reply
+                    </button>
+
+                    <div class="collapse mt-1" id="reply{{comment.sno}}">
+                      <div class="card card-body">
+                            <form method="post" action="postcomment">
+                            {% csrf_token %}
+                                <div class="form-group">
+                                  <label for="comment">Post Your Reply Here</label>
+                                  <input type="text" class="form-control" id="comment" name="comment" aria-describedby="emailHelp" placeholder="Enter Reply">
+                                </div>
+                                <div class="form-group">
+                                  <input type="hidden" class="form-control" name="sno" value="{{post.sno}}" id="sno" aria-describedby="sno">
+                                </div>
+                                <div class="form-group">
+                                  <input type="hidden" class="form-control" name="csno" value="{{comment.sno}}" id="csno" aria-describedby="csno">
+                                </div>
+                                <button type="submit" class="btn btn-dark">Submit</button>
+                            </form>
+                      </div>
+                    </div>
+
+                </div>
+                {% else %}
+                <div class='reply mt-1'>  
+                    <button class="btn btn-sm btn-secondary" type="button" disabled>
+                      Login To Reply
+                    </button>
+                </div>
+                {% endif %}
+                
+                
+                {% comment %} DISPLAY REPLIES {% endcomment %}
+                <div class="displayreplies mt-2">
+                <div> <b>Replies</b> </div>
+                {% for reply in dReply|get_reply:comment.sno  %}
+
+                    <a class="nav-link active"  data-toggle="collapse" href="#{{reply.sno}}" aria-expanded="false" aria-controls="{{reply.sno}}" style="color:black">
+                    | Reply By User {{reply.user}}!
+                    </a>
+                    
+                    <div class="collapse" id="{{reply.sno}}">
+                      <div class="card card-body">
+                            <em><b>Replies:</b></em>
+                            <hr class="mt-1">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                   <em>User <strong>{{reply.user.username}} </strong> <br> <span style="font-size:15px">({{reply.timestamp|naturaltime}})</span> </em> 
+                                </div>
+    
+                                <div class="col-sm-8">
+                                {{reply.comment}}
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        
+        </div>
+
+    {% endfor %}
+   </div>
+
+{% endblock body %}

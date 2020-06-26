@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    {% block head %}
+    {% endblock head %}
+
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+
+  </head>
+  <body style="min-height:100%">
+      
+    {% include 'navbar.html' %}
+
+    {% comment %} ALERTS {% endcomment %}
+    <div class='container-fluid'>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{message.tags}} mb-0 alert-dismissible fade show" role="alert">
+          <strong>Message: </strong> {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    </div>
+
+  
+  {% comment %} Sign Up Modal {% endcomment %}
+    <div class="modal fade" id="signupmodal" tabindex="-1" role="dialog" aria-labelledby="signupmodal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupmodal">Sign Up Here!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="post" action="/signupuser/">
+          {% csrf_token %}
+          <div class="modal-body">
+            
+              {% comment %} Sign Up Form {% endcomment %}
+
+                <div class="form-group">
+                  <label for="signupusername">Username</label>
+                  <input type="text" class="form-control" name="signupusername" id="signupusername" aria-describedby="signupusername" placeholder="Choose Unique Username (Alphabets & Numbers Only)" required>
+                </div>
+                <div class="form-group">
+                  <label for="firstname">First Name</label>
+                  <input type="text" class="form-control" name="firstname" id="firstname" aria-describedby="firstname" placeholder="Enter First Name" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastname">Last Name</label>
+                  <input type="text" class="form-control" name="lastname" id="lastname" aria-describedby="lastname" placeholder="Enter Last Name" required>
+                </div>
+                <div class="form-group">
+                  <label for="signupemail">Email Address</label>
+                  <input type="email" class="form-control" name="signupemail" id="signupemail" aria-describedby="signupemail" placeholder="Enter Email" required>
+                  <small id="signupemail" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                  <label for="signuppassword">Password</label>
+                  <input type="password" class="form-control" name="signuppassword" id="signuppassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                  <label for="signuppassword2">Confirm Password</label>
+                  <input type="password" class="form-control" name="signuppassword2" id="signuppassword2" placeholder="Confirm Password" required>
+                </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-info">Submit</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+
+  {% comment %} login Modal {% endcomment %}  
+    <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginmodal">Login Here!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% comment %} login form {% endcomment %}
+          <form method="post" action="/loginuser/">
+          {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="loginusername">Username</label>
+                <input type="text" class="form-control" name="loginusername" id="loginusername" aria-describedby="loginusername" placeholder="Enter Your Unique Username" required>
+              </div>
+              <div class="form-group">
+                <label for="loginpassword">Password</label>
+                <input type="password" class="form-control" name="loginpassword" id="loginpassword" placeholder="Password" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-info">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>    
+
+
+
+
+{% block body %}
+{% endblock %}
+
+{% include 'footer.html' %}
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    {% block js %}
+    {% endblock js %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>

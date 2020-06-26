@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    CodeNista MyBlogs
+{% endblock title %}
+
+{% block body %}
+    
+<div class="container mt-4 mb-5">
+    {% if posts.count > 0 %}
+
+    <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+            <h2 class="center" style="color:#5c6acb">My Blogs </h2>
+        </div>
+        <div class="col-sm">
+        </div>
+    </div>
+    {% for post in posts %}
+    <div class="row mt-5 mb-2">
+        <div class="col-sm">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <h3 class="mb-0">
+                <a class="text-dark text-uppercase" href="/blog/myblogs">{{post.title}}</a>
+              </h3>
+              <div class="mb-1 text-muted">{{post.timestamp}}</div>
+              <p class="card-text mb-auto">{{post.content|safe|truncatechars:200}}</p>
+              <br>
+              <a href="/blog/{{post.slug}}">Continue Reading</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+    <div class="container col-sm" style="margin-top:120px">
+        <div class="jumbotron">
+            <h1 class="display-4">Hey! You Have'nt Write Any Blog Yet</h1>
+            <p class="lead"> If You Are Not A CodeNista User Then SignUp First</p>
+            <hr class="my-4">
+            <p>To Create Your First Post Click Below</p>
+            <p class="lead">
+              <a class="btn btn-info btn-lg" href="/blog/createpost" role="button">CreatePost</a>
+            </p>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+
+{% endblock body %}
