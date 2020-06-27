@@ -1,32 +1,33 @@
 from django.shortcuts import render,HttpResponse
 from django.http import *
 from . models import Contact
-from blog.models import Post,Postview
+from blog.models import Post
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Count
 
 def home(request):
-    topposts = Postview.objects.values('post').annotate(dcount=Count('post'))[0:4]
-    list=[]
-    for x in topposts:
-        post = Post.objects.filter(sno=x['post']).first()
-        list.append(post)
+    # topposts = Postview.objects.values('post').annotate(dcount=Count('post'))[0:4]
+    # list=[]
+    # for x in topposts:
+    #     post = Post.objects.filter(sno=x['post']).first()
+    #     list.append(post)
+
+    topposts = Post.objects.all()
 
     context = {
         'topposts':list
     }
 
     return render(request,'home/home.html',context)
-    # return render(request,'home/home.html')
-    
  
 def about(request):
     posts = Post.objects.all()
     nposts = len(posts)
 
-    nviews = Postview.objects.all().count()
+    # nviews = Postview.objects.all().count()
+    nviews = 0
     users = User.objects.all().count()
 
     context={
@@ -38,7 +39,6 @@ def about(request):
     return render(request,'home/about.html',context)
 
 def contact(request):
-    # messages.error(request,'error')
     if(request.method=='POST'):
         name = request.POST['name']
         email = request.POST['email']

@@ -1,16 +1,9 @@
 from django.shortcuts import HttpResponse,render
 from django.http import *
-from . models import Post,BlogComment,Bookmark,Postview
+from . models import Post,BlogComment,Bookmark
 from django.contrib import messages
 from blog.templatetags import extras
 
-# def get_client_ip(request):
-#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-#     if x_forwarded_for:
-#         ip = x_forwarded_for.split(',')[0]
-#     else:
-#         ip = request.META.get('REMOTE_ADDR')
-#     return ip
 
 def get_client_ip(request):
     try:
@@ -48,41 +41,48 @@ def blogpost(request,slug):
                 else:
                     dReply[reply.parent.sno].append(reply)
 
-            ipposts = Postview.objects.filter(post=post)
+            # ipposts = Postview.objects.filter(post=post)
+            # context={
+            #     'post':post,
+            #     'title':posttitle,
+            #     'pcomments': pcomments,
+            #     'dReply' : dReply,
+            #     'views' : len(ipposts)
+            # }
+
             context={
                 'post':post,
                 'title':posttitle,
                 'pcomments': pcomments,
                 'dReply' : dReply,
-                'views' : len(ipposts)
             }
             return render(request,'blog/mysingleblog.html',context)
 
     
     # get ip address of the user
-    ip = get_client_ip(request)
-    print(ip)
+    # ip = get_client_ip(request)
+    # print(ip)
     post = Post.objects.filter(slug=slug).first()
 
-    ipposts = Postview.objects.filter(post=post)
-    print(ipposts)
+    # ipposts = Postview.objects.filter(post=post)
+    # print(ipposts)
 
     # calc views on the post
-    views=0
-    for ippost in ipposts:
-        views+=1
+    # views=0
+    # for ippost in ipposts:
+    #     views+=1
 
     # checking the false views
-    ippresent = False
-    for ippost in ipposts:
-        if ippost.ipaddr==ip:
-            ippresent=True 
-            break
+    # ippresent = False
+    # for ippost in ipposts:
+    #     if ippost.ipaddr==ip:
+    #         ippresent=True 
+    #         break
 
-    if ippresent==False:
-        views+=1
-        postview = Postview(post=post,ipaddr=ip)
-        postview.save()
+    # if ippresent==False:
+    #     views+=1
+    #     postview = Postview(post=post,ipaddr=ip)
+    #     postview.save()
 
     posttitle = post.title 
     posttitle = posttitle.upper()
@@ -96,12 +96,18 @@ def blogpost(request,slug):
         else:
             dReply[reply.parent.sno].append(reply)
 
+    # context={
+    #     'post':post,
+    #     'title':posttitle,
+    #     'pcomments': pcomments,
+    #     'dReply' : dReply,
+    #     'views' : views
+    # }
     context={
         'post':post,
         'title':posttitle,
         'pcomments': pcomments,
         'dReply' : dReply,
-        'views' : views
     }
 
     return render(request,'blog/blogpost.html',context)
