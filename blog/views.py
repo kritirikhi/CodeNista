@@ -1,6 +1,6 @@
 from django.shortcuts import HttpResponse,render
 from django.http import *
-from . models import Post,BlogComment,Bookmark,PostView
+from . models import Post,BlogComment,Bookmark,Postview
 from django.contrib import messages
 from blog.templatetags import extras
 
@@ -69,6 +69,7 @@ def blogpost(request,slug):
     post = Post.objects.filter(slug=slug).first()
 
     ipposts = PostView.objects.filter(post=post)
+    print(ipposts)
 
     # calc views on the post
     views=0
