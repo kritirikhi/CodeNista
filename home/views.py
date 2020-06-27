@@ -11,7 +11,7 @@ def home(request):
     topposts = Post.objects.all()[0:4]
 
     context = {
-        'topposts':list
+        'topposts':topposts
     }
 
     return render(request,'home/home.html',context)
