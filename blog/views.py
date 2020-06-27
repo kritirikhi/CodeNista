@@ -53,7 +53,7 @@ def blogpost(request,slug):
                 else:
                     dReply[reply.parent.sno].append(reply)
 
-            ipposts = PostView.objects.filter(post=post)
+            ipposts = Postview.objects.filter(post=post)
             context={
                 'post':post,
                 'title':posttitle,
@@ -68,7 +68,7 @@ def blogpost(request,slug):
     ip = get_client_ip(request)
     post = Post.objects.filter(slug=slug).first()
 
-    ipposts = PostView.objects.filter(post=post)
+    ipposts = Postview.objects.filter(post=post)
     print(ipposts)
 
     # calc views on the post
@@ -85,7 +85,7 @@ def blogpost(request,slug):
 
     if ippresent==False:
         views+=1
-        postview = PostView(post=post,ipaddr=ip)
+        postview = Postview(post=post,ipaddr=ip)
         postview.save()
 
     posttitle = post.title 
