@@ -12,20 +12,15 @@ from blog.templatetags import extras
 #         ip = request.META.get('REMOTE_ADDR')
 #     return ip
 
-PRIVATE_IPS_PREFIX = ('10.', '172.', '192.', )
 def get_client_ip(request):
-    remote_address = request.META.get('REMOTE_ADDR')
-    ip = remote_address
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        proxies = x_forwarded_for.split(',')
-        while (len(proxies) > 0 and
-                proxies[0].startswith(PRIVATE_IPS_PREFIX)):
-            proxies.pop(0)
-        if len(proxies) > 0:
-            ip = proxies[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
+    try:
+        x_forward = request.META.get("HTTP_X_FORWARDED_FOR")
+        if(x_forward):
+            ip=x_forward.split(",")[0]
+        else:
+            ip=request.META.get("REMOTE_ADDR")
+    except:
+        ip=""
 
     return ip
 
@@ -66,6 +61,7 @@ def blogpost(request,slug):
     
     # get ip address of the user
     ip = get_client_ip(request)
+    print(ip)
     post = Post.objects.filter(slug=slug).first()
 
     ipposts = Postview.objects.filter(post=post)
