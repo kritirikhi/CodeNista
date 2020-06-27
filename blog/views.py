@@ -103,6 +103,11 @@ def createpostaction(request):
         desc = request.POST['desc']
         posttitle = request.POST['posttitle']
         mytextarea = request.POST['mytextarea']
+
+        if len(desc)==0 or len(posttitle)==0 or len(mytextarea)==0:
+            messages.error(request,'All Fields Are Necessary To Be Filled')
+            return HttpResponseRedirect('/blog/createpost')
+
         t = ""
         for char in posttitle:
             if char != ' ':
