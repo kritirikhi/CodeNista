@@ -28,14 +28,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Postview',
-            fields=[
-                ('viewsno', models.AutoField(primary_key=True, serialize=False)),
-                ('ipaddr', models.CharField(max_length=15)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.Post')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Bookmark',
             fields=[
                 ('booksno', models.AutoField(primary_key=True, serialize=False)),
