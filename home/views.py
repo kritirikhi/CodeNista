@@ -1,17 +1,21 @@
 from django.shortcuts import render,HttpResponse
 from django.http import *
 from . models import Contact
-from blog.models import Post
+from blog.models import Post,PostView
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Count
 
 def home(request):
-    topposts = Post.objects.all()[0:4]
+    topposts = PostView.objects.values('post').annotate(dcount=Count('post'))[0:4]
+    list=[]
+    for x in topposts:
+        post = Post.objects.filter(sno=x['post']).first()
+        list.append(post)
 
     context = {
-        'topposts':topposts
+        'topposts':list
     }
 
     return render(request,'home/home.html',context)
@@ -20,14 +24,14 @@ def about(request):
     posts = Post.objects.all()
     nposts = len(posts)
 
+    nviews = PostView.objects.all().count()
     users = User.objects.all().count()
 
     context={
         'posts':nposts,
-        'views':10,
+        'views':nviews,
         'users':users
     }
-    
     return render(request,'home/about.html',context)
 
 def contact(request):
