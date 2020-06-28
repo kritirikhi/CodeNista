@@ -1,33 +1,8 @@
 from django.shortcuts import HttpResponse,render
 from django.http import *
-from . models import Post,BlogComment,Bookmark,PostView
+from . models import Post,BlogComment,Bookmark
 from django.contrib import messages
 from blog.templatetags import extras
-
-# def get_client_ip(request):
-#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-#     if x_forwarded_for:
-#         ip = x_forwarded_for.split(',')[0]
-#     else:
-#         ip = request.META.get('REMOTE_ADDR')
-#     return ip
-
-PRIVATE_IPS_PREFIX = ('10.', '172.', '192.', )
-def get_client_ip(request):
-    remote_address = request.META.get('REMOTE_ADDR')
-    ip = remote_address
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        proxies = x_forwarded_for.split(',')
-        while (len(proxies) > 0 and
-                proxies[0].startswith(PRIVATE_IPS_PREFIX)):
-            proxies.pop(0)
-        if len(proxies) > 0:
-            ip = proxies[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-
-    return ip
 
 def bloghome(request):
     allposts = Post.objects.all()
@@ -53,39 +28,15 @@ def blogpost(request,slug):
                 else:
                     dReply[reply.parent.sno].append(reply)
 
-            ipposts = PostView.objects.filter(post=post)
             context={
                 'post':post,
                 'title':posttitle,
                 'pcomments': pcomments,
                 'dReply' : dReply,
-                'views' : len(ipposts)
             }
             return render(request,'blog/mysingleblog.html',context)
 
-    
-    # get ip address of the user
-    ip = get_client_ip(request)
     post = Post.objects.filter(slug=slug).first()
-
-    ipposts = PostView.objects.filter(post=post)
-
-    # calc views on the post
-    views=0
-    for ippost in ipposts:
-        views+=1
-
-    # checking the false views
-    ippresent = False
-    for ippost in ipposts:
-        if ippost.ipaddr==ip:
-            ippresent=True 
-            break
-
-    if ippresent==False:
-        views+=1
-        postview = PostView(post=post,ipaddr=ip)
-        postview.save()
 
     posttitle = post.title 
     posttitle = posttitle.upper()
@@ -104,7 +55,6 @@ def blogpost(request,slug):
         'title':posttitle,
         'pcomments': pcomments,
         'dReply' : dReply,
-        'views' : views
     }
 
     return render(request,'blog/blogpost.html',context)
@@ -257,7 +207,6 @@ def bookmark(request):
 
         post = Post.objects.filter(sno = postsno).first()
         bookmark  = Bookmark.objects.filter(post=post,user=request.user)
-        print(bookmark)
 
         if len(bookmark)==0:
             bookmark = Bookmark(post=post,user=user)

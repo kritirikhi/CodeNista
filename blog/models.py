@@ -33,10 +33,4 @@ class Bookmark(models.Model):
     def __str__(self):
         return 'bookmark by: ' + self.user.username
 
-class PostView(models.Model):
-    viewsno = models.AutoField(primary_key=True)
-    ipaddr = models.CharField(max_length=15)
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
 
-
-    
