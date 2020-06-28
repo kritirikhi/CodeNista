@@ -153,6 +153,22 @@ def createpostaction(request):
         desc = request.POST['desc']
         posttitle = request.POST['posttitle']
         mytextarea = request.POST['mytextarea']
+        if len(posttitle)==0 and len(mytextarea)==0:
+            messages.error(request,'Title And Post Content Is Necessary')
+            return HttpResponseRedirect('/blog/createpost')
+        if len(posttitle)==0:
+            messages.error(request,'Title Is Necessary')
+            return HttpResponseRedirect('/blog/createpost')
+        if len(mytextarea)==0:
+            messages.error(request,'Post Content Is Necessary')
+            return HttpResponseRedirect('/blog/createpost')
+        if len(desc)>300:
+            messages.error(request,'description should be brief')
+            return HttpResponseRedirect('/blog/createpost')
+        if len(posttitle)>255:
+            messages.error(request,'Please shorten Your Title')
+            return HttpResponseRedirect('/blog/createpost')
+        
         t = ""
         for char in posttitle:
             if char != ' ':
@@ -254,7 +270,7 @@ def bookmark(request):
 
     else:
         messages.error(request,'please login to bookmark the post')
-        return HttpResponseRedirect('/blog/mybooksmarks')
+        return HttpResponseRedirect('/blog/')
 
 def mybookmarks(request):
     if request.user.is_authenticated:
@@ -263,6 +279,7 @@ def mybookmarks(request):
             'bookmarks':bookmarks
         }
         return render(request,'blog/mybookmarks.html',context)
+
 
 def deletebookmark(request):
     if request.user.is_authenticated:
