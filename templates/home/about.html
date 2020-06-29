@@ -4,6 +4,16 @@
     About Us 
 {% endblock title %}
 
+<style>
+
+@media screen and (min-width: 425.1px) {
+  div.example {
+    font-size: 80px;
+  }
+}
+
+</style>
+
 {% block body %}
    
 <div class="container-fluid col-xs-12 col-sm" style="background-size: cover; height:100% width:100%; background-image:url(../static/images/about3.jpg)">  
@@ -42,20 +52,20 @@
             <div class="col-sm-2"></div>
             <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6acb">
                 <div style="color:#ffcc00"><i class="mt-4 fa fa-users"></i></div>
-                <p style="font-size:50px; color:white">{{users}}</p>
-                <p style="font-size:50px; color:white">Users</p>
+                <p style="font-size:40px; color:white">{{users}}</p>
+                <p style="font-size:40px; color:white">Users</p>
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6ad4">
                 <div style="color:#ffcc00"><i class="mt-4 fa fa-briefcase"></i></div>
-                <p style="font-size:50px; color:white">{{posts}}</p>
-                <p style="font-size:50px; color:white">Blogs</p>
+                <p style="font-size:40px; color:white">{{posts}}</p>
+                <p style="font-size:40px; color:white">Blogs</p>
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-2 mt-4 mb-4" style="background-color:#5c6ad4">
                 <div style="color:#ffcc00"><i class="mt-4 fa fa-users"></i></div>
-                <p class="counter" style="font-size:50px; color:white">{{views}}</p>
-                <p style="font-size:50px; color:white">Viewers</p>
+                <p style="font-size:40px; color:white">{{views}}</p>
+                <p style="font-size:40px; color:white">Views</p>
             </div>
 
         </div>
