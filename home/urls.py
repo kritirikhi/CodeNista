@@ -9,5 +9,9 @@ urlpatterns = [
     path('search/',views.search,name='search'),
     path('signupuser/',views.signupuser,name='signupuser'),
     path('loginuser/',views.loginuser,name='loginuser'),
-    path('logoutuser/',views.logoutuser,name='logoutuser')
+    path('logoutuser/',views.logoutuser,name='logoutuser'),
+    path('resetpassword/',views.resetpassword,name='resetpassword'),
+    path('resetpwdaction/',views.resetpwdaction,name='resetpwdaction'),
+    path('resetpassworddone/',views.resetpassworddone,name='resetpassworddone'),
+    path('resetpwddoneaction/',views.resetpwddoneaction,name='resetpwddoneaction')
 ]

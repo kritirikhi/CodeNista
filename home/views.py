@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Count
+from django.core.mail import send_mail
+from django.conf import settings
 
 def home(request):
     topposts = PostView.objects.values('post').annotate(dcount=Count('post'))[0:4]
@@ -60,7 +62,6 @@ def contact(request):
  
     return render(request,'home/contact.html')
 
-
 def search(request):
     query = request.GET['search']
     if len(query)==0:
@@ -81,7 +82,6 @@ def search(request):
     if allposts.count()==0:
         messages.warning (request,'No Search Result Found. Please Refine Your Search Query')
     return render(request,'home/search.html',context)
-
 
 def signupuser(request):
     if(request.method=="POST"):
@@ -116,8 +116,15 @@ def signupuser(request):
         user1.first_name = firstname
         user1.last_name = lastname
         user1.save()
-        messages.success(request,"Your CodeNista Account Has Been Successfully Created")
 
+        subject = 'CodeNista Registration Is Confirmed'
+        message = 'Thank you for registering at CodeNista! Enjoy learning and make others able to learn'
+        message = message + 'Your Username is' + '  ' + '(' + signupusername + ')' 
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [signupemail,]
+        send_mail( subject, message, email_from, recipient_list )
+
+        messages.success(request,"Your CodeNista Account Has Been Successfully Created")
         return HttpResponseRedirect('/')
 
     else:
@@ -146,3 +153,48 @@ def logoutuser(request):
     logout(request)
     messages.success(request,"You Are Logged Out")
     return HttpResponseRedirect("/")
+
+def resetpassword(request):
+    return render(request,'home/resetpassword.html')
+
+def resetpwdaction(request):
+    if request.method=='POST':
+        email = request.POST['email']
+        username = request.POST['username']
+        user = User.objects.filter(email=email,username=username).first()
+
+        if user is not None:
+            context={
+                'username':username
+            }
+            return render(request,'home/resetpassworddone.html',context)
+
+        else:
+            messages.error(request,'Invalid Credentials')
+            return HttpResponseRedirect('/resetpassword')
+    
+    else:
+        return HttpResponse('error')
+
+def resetpassworddone(request):
+    return render(request,'home/resetpassworddone.html')
+
+def resetpwddoneaction(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        if(str(password) != str(password2)):
+            messages.error(request,'Passwords Do Not Match')
+            return render(request,'home/resetpassworddone.html',{'username':username})
+        
+        else:
+            user = User.objects.filter(username=username).first()
+            user.set_password(password)
+            user.save()
+            messages.success(request,'Your Password Is Reset')
+            return HttpResponseRedirect('/')
+    
+    else:
+        return HttpResponse('error')
