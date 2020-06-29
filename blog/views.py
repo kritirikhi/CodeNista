@@ -160,9 +160,10 @@ def createpostaction(request):
             messages.error(request,'Please shorten Your Title')
             return HttpResponseRedirect('/blog/createpost')
         
+        alpha="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         t = ""
         for char in posttitle:
-            if char != ' ':
+            if char != ' ' and char in alpha:
                 t=t+char
                 
         slug = str(request.user) + t
