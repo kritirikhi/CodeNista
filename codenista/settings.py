@@ -27,7 +27,7 @@ SECRET_KEY = '-%o1)+b-4q&q#1%4j_v6wh!zc@0n^jb&m2p%i4r+c7%rsp@gvv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['codenista.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
