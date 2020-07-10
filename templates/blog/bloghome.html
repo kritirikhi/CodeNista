@@ -18,7 +18,7 @@
                 <a class="text-dark text-uppercase" href="/blog/{{post.slug}}">{{post.title}}</a>
               </h3>
               <div class="mb-1 text-muted">{{post.timestamp}}</div>
-              <p class="card-text mb-auto">{{post.content|safe|truncatechars:200}}</p>
+              {{post.content|safe|truncatechars:200}}
               <a href="/blog/{{post.slug}}" role="button">Continue Reading</a>
             </div>
           </div>
