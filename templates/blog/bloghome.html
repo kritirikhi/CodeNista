@@ -18,9 +18,8 @@
                 <a class="text-dark text-uppercase" href="/blog/{{post.slug}}">{{post.title}}</a>
               </h3>
               <div class="mb-1 text-muted">{{post.timestamp}}</div>
-               {% comment %} ({{post.views}} views) {% endcomment %}
               <p class="card-text mb-auto">{{post.content|safe|truncatechars:200}}</p>
-              <a href="/blog/{{post.slug}}" role="button">Continue Reading</button>
+              <a href="/blog/{{post.slug}}" role="button">Continue Reading</a>
             </div>
           </div>
         </div>
