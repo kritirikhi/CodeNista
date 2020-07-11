@@ -152,9 +152,13 @@ def loginuser(request):
         return HttpResponse('error')
 
 def logoutuser(request):
-    logout(request)
-    messages.success(request,"You Are Logged Out")
-    return HttpResponseRedirect("/")
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request,"You Are Logged Out")
+        return HttpResponseRedirect("/")
+    else:
+        messages.error(request,"Anonymous User")
+        return HttpResponseRedirect("/")
 
 def resetpassword(request):
     return render(request,'home/resetpassword.html')
