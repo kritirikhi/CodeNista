@@ -38,8 +38,9 @@
                 <a class="text-dark" href="/blog/{{post.slug}}">{{post.title}}</a>
               </h3>
               <div class="mb-1 text-muted">{{post.timestamp}}</div>
-              <p class="card-text mb-auto">{{post.content|safe|truncatechars:500}}</p>
-              <a href="/blog/{{post.slug}}">Continue Reading</a>
+              {{post.content|safe|truncatechars:500}}
+              <br>
+              <strong><a href="/blog/{{post.slug}}">Continue Reading</a></strong>    
             </div>
           </div>
         </div>
