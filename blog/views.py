@@ -275,6 +275,10 @@ def mybookmarks(request):
             'bookmarks':bookmarks
         }
         return render(request,'blog/mybookmarks.html',context)
+    else:
+        messages.error(request,'Please login first')
+        return HttpResponseRedirect('/')
+
 
 
 def deletebookmark(request):
@@ -285,4 +289,8 @@ def deletebookmark(request):
         bookmark.delete()
         messages.success(request,'bookmark has been deleted')
         return HttpResponseRedirect("/blog/mybookmarks")
+    else:
+        messages.error(request,'Please login first')
+        return HttpResponseRedirect('/')
+
         

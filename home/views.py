@@ -72,7 +72,9 @@ def search(request):
     else:
         allpoststitle = Post.objects.filter(title__icontains=query)
         allpostscontent = Post.objects.filter(content__icontains=query)
+        allpostsuser = Post.objects.filter(author__icontains=query)
         allposts = allpoststitle.union(allpostscontent)
+        allposts = allposts.union(allpostsuser)
 
     context={
         'query':query,
