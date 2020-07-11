@@ -3,6 +3,7 @@ from django.http import *
 from . models import Post,BlogComment,Bookmark,PostView
 from django.contrib import messages
 from blog.templatetags import extras
+from django.conf import settings
 
 PRIVATE_IPS_PREFIX = ('10.', '172.', '192.', )
 def get_client_ip(request):
