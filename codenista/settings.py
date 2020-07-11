@@ -136,4 +136,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'codenistablog@gmail.com'
 EMAIL_HOST_PASSWORD = 'codenistadkka1@'
 
+SITE_URL = '/http://codenista.herokuapp.com'
+
 django_heroku.settings(locals())

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}
+    CodeNista Profile Share
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-4 mb-5">
+
+    {% if posts.count > 0 %}
+
+    {% for post in posts %}
+
+    <div class="row mb-2 mt-5">
+        <div class="col-sm">
+          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+            <div class="card-body d-flex flex-column align-items-start">
+              <strong class="d-inline-block mb-2 text-primary">By: {{post.author}}</strong>
+              <h3 class="mb-0">
+                <a class="text-dark text-uppercase" href="/blog/{{post.slug}}">{{post.title}}</a>
+              </h3>
+              <div class="mb-1 text-muted">{{post.timestamp}}</div>
+              {{post.content|safe|truncatechars:200}}
+              <br>
+              <a href="/blog/{{post.slug}}" role="button">Continue Reading</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+    <div class="container col-sm" style="margin-top:120px">
+        <div class="jumbotron">
+            <h1 class="display-4">The User Haven't Created Any Post Yet</h1>
+            <hr class="my-4">
+            <p>To View Our Popular Posts Click Below</p>
+            <p class="lead">
+              <a class="btn btn-info btn-lg" href="/" role="button">Home</a>
+            </p>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock body %}

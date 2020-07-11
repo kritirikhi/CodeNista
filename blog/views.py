@@ -184,8 +184,12 @@ def myblogs(request):
     else:
         posts = Post.objects.filter(author=request.user)
 
+        site_url = settings.SITE_URL
+        link = site_url+"/profilepage/?username="+str(request.user)
+        
         context={
             'posts':posts,
+            'link':link
         }
         return render(request,'blog/myblogs.html',context)
 

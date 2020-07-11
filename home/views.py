@@ -198,3 +198,16 @@ def resetpwddoneaction(request):
     
     else:
         return HttpResponse('error')
+
+def profilepage(request):
+    username=request.GET['username']
+    user = User.objects.filter(username=username).first()
+    if user is None:
+        return HttpResponse("404 Error")
+        
+    posts = Post.objects.filter(author=username)
+
+    context={
+        'posts':posts
+    }
+    return render(request,'home/profilepage.html',context)

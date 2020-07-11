@@ -13,5 +13,6 @@ urlpatterns = [
     path('resetpassword/',views.resetpassword,name='resetpassword'),
     path('resetpwdaction/',views.resetpwdaction,name='resetpwdaction'),
     path('resetpassworddone/',views.resetpassworddone,name='resetpassworddone'),
-    path('resetpwddoneaction/',views.resetpwddoneaction,name='resetpwddoneaction')
+    path('resetpwddoneaction/',views.resetpwddoneaction,name='resetpwddoneaction'),
+    path('profilepage/',views.profilepage,name='profilepage'),
 ]
