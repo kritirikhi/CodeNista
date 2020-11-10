@@ -27,7 +27,7 @@ SECRET_KEY = '-%o1)+b-4q&q#1%4j_v6wh!zc@0n^jb&m2p%i4r+c7%rsp@gvv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['codenista.herokuapp.com']
+ALLOWED_HOSTS = ['codenista.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -129,13 +129,17 @@ MESSAGE_TAGS = {
     messages.ERROR:'danger'
 }
 
+SITE_URL = 'codenista.herokuapp.com'
+
+# google reCaptcha secret key
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LcytrMZAAAAACBk7i1SIi9fYDMlzuxfN460bpuX'
+
+# email sending essentials
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'codenistablog@gmail.com'
 EMAIL_HOST_PASSWORD = 'codenistadkka1@'
-
-SITE_URL = 'codenista.herokuapp.com'
 
 django_heroku.settings(locals())
