@@ -131,9 +131,6 @@ MESSAGE_TAGS = {
 
 SITE_URL = 'codenista.herokuapp.com'
 
-# google reCaptcha secret key
-GOOGLE_RECAPTCHA_SECRET_KEY = '6LcytrMZAAAAACBk7i1SIi9fYDMlzuxfN460bpuX'
-
 # email sending essentials
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
